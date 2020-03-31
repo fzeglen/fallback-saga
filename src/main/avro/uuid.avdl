@@ -1,0 +1,6 @@
+@namespace("com.worldremit.avro")
+protocol UuidAPI {
+    record UUID {
+        string value;
+    }
+}

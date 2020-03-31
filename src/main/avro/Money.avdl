@@ -1,0 +1,10 @@
+@namespace("com.worldremit.ruleengine.avro")
+protocol MoneyProtocol {
+
+  record Money {
+    Currency currency;
+    decimal(9, 2) amount;
+  }
+
+  fixed Currency (3);
+} 

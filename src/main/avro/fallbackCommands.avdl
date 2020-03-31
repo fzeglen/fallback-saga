@@ -1,0 +1,30 @@
+@namespace("com.worldremit.avro.fallback.commands")
+protocol FallbackCommands {
+    import idl "./uuid.avdl";
+
+    record FallbackTransferNotAuthorised{
+        com.worldremit.avro.UUID eid;
+        com.worldremit.avro.UUID transferId;
+        com.worldremit.avro.UUID amountDueId;
+        boolean isDeferred;
+    }
+
+    // TODO: confirm with Maciek that FallbackDelivery payload == FallbackTransferNotAuthorised
+    record FallbackDelivery {
+        com.worldremit.avro.UUID eid;
+        com.worldremit.avro.UUID transferId;
+        com.worldremit.avro.UUID amountDueId;
+        boolean isDeferred;
+    }
+
+    record FallbackPaymentCaptured {
+        com.worldremit.avro.UUID eid;
+        com.worldremit.avro.UUID transferId;
+    }
+
+    record FallbackPaymentCapturedFailed {
+        com.worldremit.avro.UUID eid;
+        com.worldremit.avro.UUID transferId;
+    }
+
+}

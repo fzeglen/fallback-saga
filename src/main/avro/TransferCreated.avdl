@@ -1,0 +1,20 @@
+@namespace("com.worldremit.avro.transfer")
+protocol TransferCreated {
+  import idl "./uuid.avdl";
+  import idl "./Money.avdl";
+
+  record TransferCreated {
+    com.worldremit.avro.UUID transferId;
+    UserTransferDataWithSnapshotId sender;
+    UserTransferDataWithSnapshotId recipient;
+    com.worldremit.avro.UUID amountDueId;
+    com.worldremit.avro.UUID pricingId;
+  }
+
+  record UserTransferDataWithSnapshotId {
+    com.worldremit.avro.UUID userSnapshotId;
+    com.worldremit.avro.UUID userId;
+    string countryCode;
+  }
+
+}

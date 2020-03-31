@@ -1,0 +1,25 @@
+@namespace("com.worldremit.avro.transfer.status")
+protocol TransferStatusChanged {
+  import idl "./uuid.avdl";
+
+  record PaymentApproved {
+    com.worldremit.avro.UUID transferId;
+  }
+
+  record TransferAuthorized {
+    com.worldremit.avro.UUID transferId;
+  }
+
+  record TransferNotAuthorized {
+    com.worldremit.avro.UUID transferId;
+  }
+
+  record TransferPaid {
+    com.worldremit.avro.UUID transferId;
+  }
+
+  //FIXME: check and adjust to match current impl in payments
+  record TransferCancelled {
+    com.worldremit.avro.UUID transferId;
+  }
+}

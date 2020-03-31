@@ -1,0 +1,20 @@
+@namespace("com.worldremit.payment.domain.event")
+protocol Payment {
+  import idl "./uuid.avdl";
+
+  record PaymentAuthorised{
+    com.worldremit.avro.UUID amountDueId;
+    int fraudRiskScore;
+  }
+
+  record PaymentCaptured {
+    com.worldremit.avro.UUID amountDueId;
+    com.worldremit.avro.UUID eid;
+  }
+
+//FIXME: check and adjust to match current impl in payments
+  record PaymentCapturedFailed {
+    com.worldremit.avro.UUID amountDueId;
+    com.worldremit.avro.UUID eid;
+  }
+}

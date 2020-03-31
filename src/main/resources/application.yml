@@ -1,0 +1,61 @@
+app.kafka.schema-registry.url: http://localhost:8085
+app.kafka.bootstrap-servers: localhost:9093
+
+app.kafka.partitionCount: 5
+server:
+  port: 8083
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: fallback-service
+  cloud:
+    stream:
+      instanceCount: ${app.kafka.partitionCount}
+      bindings:
+        processPaymentEvents-in-0:
+          destination: payment.events
+          consumer:
+            useNativeDecoding: true
+        processPaymentEvents-in-1:
+          destination: transfer.create.events
+          consumer:
+            useNativeDecoding: true
+      kafka:
+        streams:
+          binder:
+            brokers: ${app.kafka.bootstrap-servers}
+            configuration:
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+              schema.registry.url: ${app.kafka.schema-registry.url}
+              value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+            deserialization-exception-handler: sendtodlq
+        binder:
+          producer-properties:
+            key.serializer: org.apache.kafka.common.serialization.StringSerializer
+            value.serializer: com.worldremit.lib.ManyTypesSerializer
+            value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+          consumer-properties:
+            key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value.deserializer: com.worldremit.lib.ManyTypesDeserializer
+            value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+            specific.avro.reader: true
+      function:
+        definition: processPaymentEvents
+  kafka:
+    properties:
+      specific.avro.reader: true
+      schema.registry.url: ${app.kafka.schema-registry.url}
+    streams:
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: com.worldremit.lib.ManyTypesSerde
+        value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+        commit.interval.ms: 50
+      application-id: "fallback-kstream"
+    bootstrap-servers: ${app.kafka.bootstrap-servers}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringDeserializer

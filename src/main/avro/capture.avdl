@@ -1,0 +1,11 @@
+@namespace("com.worldremit.avro.payments")
+protocol Payments {
+  import idl "./uuid.avdl";
+
+  //TODO download from SchemaRegistry using gradle plugin
+  record CapturePayment {
+    com.worldremit.avro.UUID amountDueId;
+    com.worldremit.avro.UUID eid;
+  }
+
+}
